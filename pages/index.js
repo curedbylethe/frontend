@@ -1,9 +1,27 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 export default function Home() {
-  const handleLogin = (e) => {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("login");
+    try {
+      const res = await fetch("http://localhost:8000/auth/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      const resJson = await res.json();
+      console.log("resJson", resJson);
+      console.log("res", res);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div>
@@ -18,18 +36,23 @@ export default function Home() {
           <div className="text-2xl text-center">Login</div>
           <form onSubmit={handleLogin} className="mt-6">
             <div className="mb-4">
-              <label for="email">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@example.com"
                 className="w-full p-3 transition duration-500 bg-white rounded-md shadow-inner outline-none bg-opacity-10 hover:bg-opacity-20 shadow-slate-600/90"
               />
             </div>
             <div className="mb-4">
-              <label for="password">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 transition duration-500 bg-white rounded-md shadow-inner outline-none bg-opacity-10 hover:bg-opacity-20 shadow-slate-600/90"
               />
             </div>
