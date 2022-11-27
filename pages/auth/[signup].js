@@ -14,27 +14,25 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch(
-        "http://127.0.0.1:8000/auth/signup/?token=" + token,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            password: password,
-            birthday: birthday,
-            name: name,
-            id_number: idNumber,
-          }),
-        }
-      );
+      let res = await fetch("http://127.0.0.1:8000/auth/signup/", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: token,
+          username: username,
+          password: password,
+          birthday: birthday,
+          name: name,
+          id_number: idNumber,
+        }),
+      });
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <div className="flex flex-col justify-center align-middle items-center">
+    <div className="flex flex-col items-center justify-center align-middle">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -71,7 +69,7 @@ const Page = () => {
           onChange={(e) => setBirthday(e.target.value)}
           className="border-[1px] px-[16px] w-[221px] h-[48px] mt-6 rounded-lg"
         />
-        <button type="submit" className=" bg-blue-600">
+        <button type="submit" className="bg-blue-600 ">
           submit
         </button>
       </form>
