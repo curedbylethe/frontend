@@ -1,59 +1,53 @@
 import Head from "next/head";
-import { useState } from "react";
-import Layout from "../components/layout";
+import Link from "next/link";
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      let res = await fetch("http://127.0.0.1:8000/auth/register/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-        }),
-      });
-      console.log(res);
-
-      let resJson = await res.json();
-      console.log(resJson);
-      if (res.status === 201) {
-        setEmail("");
-        setMessage(
-          "Complete your registration by clicking the link in your email"
-        );
-      } else {
-        setMessage("Some error occured: " + resJson.email);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    console.log("login");
   };
-
   return (
-    <>
-      <Layout>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        {/* email input */}
-        <div className="flex flex-col items-center justify-center align-middle">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border-[1px] px-[16px] w-[221px] h-[48px] mt-6 rounded-lg"
-            />
-            <button type="submit" className="bg-blue-600 ">
-              submit
+    <div>
+      <Head>
+        <title>Home</title>
+      </Head>
+      <div
+        className="flex flex-col items-center justify-center h-screen bg-black bg-cover bg-main"
+        style={{ textShadow: "0px 1px 4px #77A" }}
+      >
+        <div className="flex flex-col items-center px-8 py-10 mx-auto text-white bg-white rounded-md shadow-2xl w-96 shadow-slate-900 bg-clip-padding backdrop-filter bg-opacity-10 backdrop-blur-md">
+          <div className="text-2xl text-center">Login</div>
+          <form onSubmit={handleLogin} className="mt-6">
+            <div className="mb-4">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                className="w-full p-3 transition duration-500 bg-white rounded-md shadow-inner outline-none bg-opacity-10 hover:bg-opacity-20 shadow-slate-600/90"
+              />
+            </div>
+            <div className="mb-4">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                className="w-full p-3 transition duration-500 bg-white rounded-md shadow-inner outline-none bg-opacity-10 hover:bg-opacity-20 shadow-slate-600/90"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full p-3 mt-1 font-semibold transition duration-500 bg-white rounded-md shadow-md bg-opacity-30 hover:bg-opacity-40 shadow-slate-600/70"
+            >
+              Login
             </button>
+            <div className="my-4 text-center">or</div>
+            <Link href="/signup">
+              <button className="w-full p-3 mt-1 font-semibold transition duration-500 bg-white rounded-md shadow-md bg-opacity-30 hover:bg-opacity-40 shadow-slate-600/70">
+                Signup
+              </button>
+            </Link>
           </form>
-          <p>{message}</p>
         </div>
-      </Layout>
-    </>
+      </div>
+    </div>
   );
 }
